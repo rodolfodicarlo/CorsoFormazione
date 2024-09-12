@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\Rodolfo\.nuget\packages\middlewareexceptionhandler\1.0.8\contentFiles\any\net7.0\appsettings.Development.json" />
+    <Content Remove="C:\Users\Rodolfo\.nuget\packages\middlewareexceptionhandler\1.0.8\contentFiles\any\net7.0\appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="MiddlewareExceptionHandler" Version="1.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Corso.Entity\Corso.Entity.csproj" />
+  </ItemGroup>
+
+</Project>
