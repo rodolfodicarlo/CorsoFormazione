@@ -16,8 +16,8 @@ namespace Corso.Entity.Migrations
                 {
                     Idaula = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Descrizione = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    NumeroPosti = table.Column<int>(type: "int", nullable: true)
+                    Descrizione = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    NumeroPosti = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

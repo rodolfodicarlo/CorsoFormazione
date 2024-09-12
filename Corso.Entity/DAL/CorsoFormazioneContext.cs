@@ -13,7 +13,7 @@ namespace Corso.Entity.DAL
 
         public virtual DbSet<Aula> Aula { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=212.237.41.167;initial catalog=CorsoFormazione;user id=sa;password=N2s46Lud7GmJMoqE;TrustServerCertificate=True;");
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Data Source=212.237.41.167;initial catalog=CorsoFormazione-Alessio;user id=sa;password=N2s46Lud7GmJMoqE;TrustServerCertificate=True;");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
