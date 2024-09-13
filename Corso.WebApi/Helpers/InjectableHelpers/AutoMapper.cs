@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Corso.Service.DTOs.AulaDTOs;
 using Corso.WebApi.Models.AulaModels;
+using Corso.WebApi.Models.DocenteModels;
 
 namespace Corso.WebApi.Helpers.InjectableHelpers
 {
@@ -22,6 +23,13 @@ namespace Corso.WebApi.Helpers.InjectableHelpers
             CreateMap<ModificaAulaModel, ModificaAulaDTO>();
 
             #endregion
+            #region Aula
+
+            CreateMap<CreaDocenteModel, CreaAulaDTO>();
+            CreateMap<ModificaDocenteModel, ModificaAulaDTO>();
+
+            #endregion
+
         }
     }
 }
