@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Corso.Entity.DAL;
 using Corso.Service.DTOs.AulaDTOs;
+using Corso.Service.DTOs.CorsoDTOs;
 using Corso.Service.DTOs.DocenteDTOs;
+using Corso.Service.DTOs.Studente_DTOs;
 
 namespace Corso.Service.Helpers.InjectableHelpers
 {
@@ -29,6 +31,16 @@ namespace Corso.Service.Helpers.InjectableHelpers
             CreateMap<CreaDocenteDTO, Docente>();
             CreateMap<ModificaDocenteDTO, Docente>();
             CreateMap<Docente , DocenteDTO>();
+            #endregion
+            #region Studente
+            CreateMap<CreaStudenteDTO, Docente>();
+            CreateMap<ModificaStudenteDTO, Docente>();
+            CreateMap<Docente, DocenteDTO>();
+            #endregion
+            #region Corso
+            CreateMap<CreaCorsoDTO, CorsoEntity>();
+            CreateMap<ModificaCorsoDTO, CorsoEntity>();
+            CreateMap<CorsoEntity, CorsoDTO>();
             #endregion
         }
     }

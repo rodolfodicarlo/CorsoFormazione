@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using Corso.Service.DTOs.DocenteDTOs;
 using Corso.Service.IServices;
 using Corso.Service.Services;
@@ -44,7 +45,7 @@ namespace Corso.WebApi.Controllers
             try
             {
                 List<DocenteDTO> elencoDocenti = await _docenteService.GetAll();
-                return StandardMessageResult(System.Net.HttpStatusCode.OK, result: elencoDocenti);
+                return StandardMessageResult(HttpStatusCode.OK, result: elencoDocenti);
             }
             catch
             {
@@ -66,7 +67,7 @@ namespace Corso.WebApi.Controllers
             try
             {
                 DocenteDTO docenteDTO = await _docenteService.GetById(id);
-                return StandardMessageResult(System.Net.HttpStatusCode.OK, result: docenteDTO);
+                return StandardMessageResult(HttpStatusCode.OK, result: docenteDTO);
             }
             catch
             {
@@ -90,7 +91,7 @@ namespace Corso.WebApi.Controllers
             {
                 CreaDocenteDTO creaDocenteDTO = _mapper.Map<CreaDocenteDTO>(model);
                 DocenteDTO docenteDTO = await _docenteService.Create(creaDocenteDTO);
-                return StandardMessageResult(System.Net.HttpStatusCode.OK, result: docenteDTO);
+                return StandardMessageResult(HttpStatusCode.OK, result: docenteDTO);
             }
             catch
             {
@@ -113,7 +114,7 @@ namespace Corso.WebApi.Controllers
             {
                 ModificaDocenteDTO modificaDocenteDTO = _mapper.Map<ModificaDocenteDTO>(model);
                 DocenteDTO docenteDTO = await _docenteService.Update(modificaDocenteDTO);
-                return StandardMessageResult(System.Net.HttpStatusCode.OK, result: docenteDTO);
+                return StandardMessageResult(HttpStatusCode.OK, result: docenteDTO);
             }
             catch
             {
@@ -135,7 +136,7 @@ namespace Corso.WebApi.Controllers
             try
             {               
                 int idDeleted = await _docenteService.Delete(id);
-                return StandardMessageResult(System.Net.HttpStatusCode.OK, result: idDeleted);
+                return StandardMessageResult(HttpStatusCode.OK, result: idDeleted);
             }
             catch
             {

@@ -11,5 +11,7 @@ namespace Corso.Entity.DAL
         public int IDDocente { get; set; }
         public string Cognome { get; set; } = null!;
         public string Nome { get; set; } = null!;
+        public ICollection<CorsoEntity> Corso { get; set; }= new HashSet<CorsoEntity>();
+
     }
 }

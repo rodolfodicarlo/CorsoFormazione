@@ -1,4 +1,6 @@
-﻿namespace Corso.WebApi.Models.DocenteModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Corso.WebApi.Models.DocenteModels
 {
     /// <summary>
     /// Modello utilizzato per modificare un docente esistente.
@@ -8,6 +10,7 @@
         /// <summary>
         /// Identificativo univoco del docente da modifcare .
         /// </summary>
+        [Required]
         public int IDDocente { get; set; }
     }
 }

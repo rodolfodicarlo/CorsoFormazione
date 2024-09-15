@@ -12,6 +12,7 @@ namespace Corso.Entity.IUnitOfWork
         public IAulaRepository AulaRepository { get; private set; }
         public IDocenteRepository DocenteRepository { get; private set; }
         public IStudenteRepository StudenteRepository { get; private set; }
+        public ICorsoRepository CorsoRepository { get; private set; }
 
         public UnitOfWork(CorsoFormazioneContext context)
         {
@@ -20,6 +21,7 @@ namespace Corso.Entity.IUnitOfWork
             AulaRepository = new AulaRepository(context);
             DocenteRepository = new DocenteRepository(context);
             StudenteRepository = new StudenteRepository(context);
+            CorsoRepository = new CorsoRepository(context);
     }
 
         public void Dispose()

@@ -23,14 +23,14 @@ namespace Corso.Service.IServices
         /// <summary>
         /// Crea un nuovo record di AulaDTO.
         /// </summary>
-        /// <param name="dto">L'oggetto CreaAulaDTO per la creare una nuova AulaDTO.</param>
+        /// <param name="dto">L'oggetto CreaAulaDTO per creare una nuova AulaDTO.</param>
         /// <returns>Il nuovo oggetto AulaDTO creato.</returns>
         Task<AulaDTO> Create(CreaAulaDTO dto);
 
         /// <summary>
         /// Aggiorna un record esistente di AulaDTO.
         /// </summary>
-        /// <param name="dto">L'oggetto ModificaAulaDTO aggiornate per l'AulaDTO.</param>
+        /// <param name="dto">L'oggetto ModificaAulaDTO aggiornato per l'AulaDTO.</param>
         /// <returns>L'oggetto AulaDTO aggiornato.</returns>
         Task<AulaDTO> Update(ModificaAulaDTO dto);
 
