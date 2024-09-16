@@ -14,8 +14,8 @@ namespace Corso.Entity.DAL
         public string NomeCorso { get; set; } = null!;
         public string Durata { get; set; } = null!;
         public DateOnly DataInizio { get; set; } 
-        public Aula Aula { get; set; } = null!;
-        public Docente Docente { get; set; } = null!;
+        public virtual Aula Aula { get; set; } = null!;
+        public virtual Docente Docente { get; set; } = null!;
 
     }
 }

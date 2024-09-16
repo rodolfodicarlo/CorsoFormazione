@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Corso.Entity.DAL;
+using Corso.WebApi.Models.AulaModels;
+using Corso.WebApi.Models.DocenteModels;
 
 namespace Corso.WebApi.Models.CorsoModels
 {
@@ -26,10 +28,10 @@ namespace Corso.WebApi.Models.CorsoModels
         /// <summary>
         /// Oggetto Aula
         /// </summary>
-        public Aula Aula { get; set; } = null!;
+        public AulaModel Aula { get; set; } = null!;
         /// <summary>
         /// Oggetto Docente
         /// </summary>
-        public Docente Docente { get; set; } = null!;
+        public DocenteModel Docente { get; set; } = null!;
     }
 }

@@ -91,9 +91,9 @@ namespace Corso.WebApi.Controllers
                 CorsoDTO corsoDTO = await _corsoService.Create(creaCorsoDTO);
                 return StandardMessageResult(HttpStatusCode.OK , result: corsoDTO);
             }
-            catch
+            catch(Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
         /// <summary>

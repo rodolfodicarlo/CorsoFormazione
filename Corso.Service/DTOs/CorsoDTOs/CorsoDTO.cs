@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Corso.Entity.DAL;
+using Corso.Service.DTOs.AulaDTOs;
+using Corso.Service.DTOs.DocenteDTOs;
 
 namespace Corso.Service.DTOs.CorsoDTOs
 {
@@ -29,12 +31,12 @@ namespace Corso.Service.DTOs.CorsoDTOs
         /// </summary>
         public DateOnly DataInizio { get; set; }
         /// <summary>
-        /// 
+        /// Oggetto DTO di Aula
         /// </summary>
-        public Aula Aula { get; set; } = null!;
+        public AulaDTO Aula { get; set; } = null!;
         /// <summary>
-        /// 
+        /// Oggetto DTO di Docente
         /// </summary>
-        public Docente Docente { get; set; } = null!;
+        public DocenteDTO Docente { get; set; } = null!;
     }
 }

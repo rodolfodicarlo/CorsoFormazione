@@ -22,6 +22,7 @@ namespace Corso.Entity.DAL
         {
             base.OnModelCreating(modelBuilder);
 
+
             modelBuilder.Entity<Aula>(entity =>
             {
                 entity.HasKey(e => e.Idaula);

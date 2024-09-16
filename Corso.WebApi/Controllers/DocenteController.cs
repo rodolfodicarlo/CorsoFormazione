@@ -57,7 +57,7 @@ namespace Corso.WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Un oggetto <see cref="DocenteDTO"/></returns>
-        /// <response code="200">Un'aula specifica per ID..</response>
+        /// <response code="200">Un docente specifico per ID..</response>
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpGet]
@@ -79,13 +79,13 @@ namespace Corso.WebApi.Controllers
         /// Crea un nuovo docente
         /// </summary>
         /// <param name="model"></param>
-        /// /// <returns>L'oggetto <see cref="DocenteDTO"/> creato .</returns>
-        /// <response code="200">Un'aula specifica per ID..</response>
+        /// <returns>L'oggetto <see cref="DocenteDTO"/> creato .</returns>
+        /// <response code="200">Il docente creato.</response>
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponseModel<DocenteDTO>),StatusCodes.Status200OK)]
-        public async Task<ActionResult> CreaDocente([FromBody] CreaAulaModel model)
+        public async Task<ActionResult> CreaDocente([FromBody] CreaDocenteModel model)
         {
             try
             {
@@ -103,7 +103,7 @@ namespace Corso.WebApi.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns>L'oggetto <see cref="DocenteDTO"/> aggiornato .</returns>
-        /// <response code="200">Un'aula specifica per ID..</response>
+        /// <response code="200">Il docente modificato.</response>
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpPut]
@@ -126,7 +126,7 @@ namespace Corso.WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>L'ID del docente eliminato.</returns>
-        /// <response code="200">L'id dell'aula eliminata.</response>
+        /// <response code="200">L'id del docente eliminato.</response>
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpDelete]

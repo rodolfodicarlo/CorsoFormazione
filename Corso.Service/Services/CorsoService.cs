@@ -36,7 +36,7 @@ namespace Corso.Service.Services
         {
             try
             {
-                List<CorsoEntity> listaCorsi = (await _unitOfWork.CorsoRepository.GetAll()).ToList();
+                List<CorsoEntity> listaCorsi = (await _unitOfWork.CorsoRepository.Get(includeProperties: ["Aula","Docente"])).ToList();
                 List<CorsoDTO> listaCorsiDTO = _mapper.Map<List<CorsoDTO>>(listaCorsi);
                 return listaCorsiDTO;
             }
@@ -64,9 +64,12 @@ namespace Corso.Service.Services
         {
             try
             {
-                CorsoEntity corso = _mapper.Map<CorsoEntity>(dto);
+                Aula aula = (await _unitOfWork.AulaRepository.Get(e => e.Idaula == dto.Aula.IdAula)).FirstOrDefault() ?? throw new BadRequestException("IDAula errato o inesistente", "Ops...qualcosa è andato storto");
+                _ = (await _unitOfWork.DocenteRepository.Get(e => e.IDDocente == dto.Docente.IDDocente)).FirstOrDefault() ?? throw new BadRequestException("IDDocente errato o inesistente", "Ops...qualcosa è andato storto");
+
+                CorsoEntity corso = _mapper.Map<CorsoEntity>(dto);             
                 corso = await _unitOfWork.CorsoRepository.Insert(corso);
-                await _unitOfWork.AulaRepository.Save();
+                await _unitOfWork.CorsoRepository.Save();
                 CorsoDTO corsoDTO = _mapper.Map<CorsoDTO>(corso);
                 return corsoDTO;
             }
