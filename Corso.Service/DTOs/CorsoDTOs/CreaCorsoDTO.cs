@@ -29,10 +29,10 @@ namespace Corso.Service.DTOs.CorsoDTOs
         /// <summary>
         /// Oggetto dto Aula
         /// </summary>
-        public AulaDTO Aula { get; set; } = null!;
+        public int IDAula { get; set; }
         /// <summary>
         /// Oggetto DTO Docente
         /// </summary>
-        public DocenteDTO Docente { get; set; } = null!;
+        public int IDDocente { get; set; }
     }
 }

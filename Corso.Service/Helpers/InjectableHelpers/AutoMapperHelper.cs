@@ -24,7 +24,6 @@ namespace Corso.Service.Helpers.InjectableHelpers
             CreateMap<CreaAulaDTO, Aula>();
             CreateMap<ModificaAulaDTO, Aula>();
             CreateMap<Aula, AulaDTO>();
-
             #endregion
 
             #region Docente
@@ -38,13 +37,10 @@ namespace Corso.Service.Helpers.InjectableHelpers
             CreateMap<Docente, DocenteDTO>();
             #endregion
             #region Corso
-            CreateMap<CreaCorsoDTO, CorsoEntity>()
-             .ForMember(dest => dest.IDAula, opt => opt.MapFrom(src => src.Aula.IdAula))
-             .ForMember(dest => dest.IDDocente, opt => opt.MapFrom(src => src.Docente.IDDocente));         
+
+            CreateMap<CreaCorsoDTO, CorsoEntity>();
             CreateMap<ModificaCorsoDTO, CorsoEntity>();
-            CreateMap<CorsoEntity, CorsoDTO>()
-             .ForMember(dest => dest.Aula.IdAula, opt => opt.MapFrom(src => new AulaDTO() { IdAula=src.IDAula}))
-             .ForMember(dest => dest.Docente.IDDocente, opt => opt.MapFrom(src => new DocenteDTO() { IDDocente=src.IDDocente}));
+            CreateMap<CorsoEntity, CorsoDTO>();
 
             #endregion
         }

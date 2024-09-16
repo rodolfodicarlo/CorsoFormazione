@@ -26,12 +26,12 @@ namespace Corso.WebApi.Models.CorsoModels
         [Required]
         public DateOnly DataInizio { get; set; }
         /// <summary>
-        /// Oggetto Aula
+        /// Identificativo Aula
         /// </summary>
-        public AulaModel Aula { get; set; } = null!;
+        public int IDDocente { get; set; }
         /// <summary>
-        /// Oggetto Docente
+        /// Identificativo Docente
         /// </summary>
-        public DocenteModel Docente { get; set; } = null!;
+        public int IDAula { get; set; }
     }
 }
