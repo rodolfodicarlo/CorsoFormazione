@@ -7,6 +7,6 @@
         public string Descrizione { get; set; } = null!;
 
         public int NumeroPosti { get; set; }
-        public ICollection<CorsoEntity> Corso { get; set; } = new HashSet<CorsoEntity>();
+        public ICollection<CorsoEntity> Corso { get; set; } = null!;
     }
 }
