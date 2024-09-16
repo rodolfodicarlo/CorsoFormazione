@@ -7,6 +7,6 @@
         public string Descrizione { get; set; } = null!;
 
         public int NumeroPosti { get; set; }
-        public ICollection<Corso> Corso { get; set; } = null!;
+        public virtual ICollection<Corso> Corso { get; set; } = null!;
     }
 }

@@ -34,16 +34,16 @@ namespace Corso.WebApi.Helpers.InjectableHelpers
             CreateMap<CreaDocenteModel, CreaDocenteDTO>();
             CreateMap<ModificaDocenteModel, ModificaDocenteDTO>();
 
-            #endregion Studente
+            #endregion 
 
-            #region
+            #region Studente
             CreateMap<CreaStudenteModel, CreaStudenteDTO>();
-            CreateMap<ModificaStudenteDTO, ModificaStudenteDTO>();
+            CreateMap<ModificaStudenteModel, ModificaStudenteDTO>();
             #endregion
 
             #region Corso
             CreateMap<CreaCorsoModel, CreaCorsoDTO>();
-            CreateMap<ModificaCorsoDTO, CreaCorsoDTO>();
+            CreateMap<ModificaCorsoModel, ModificaCorsoDTO>();
             #endregion
         }
     }

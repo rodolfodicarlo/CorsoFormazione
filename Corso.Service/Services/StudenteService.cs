@@ -60,7 +60,7 @@ namespace Corso.Service.Services
             {
                 Studente studente = _mapper.Map<Studente>(dto);
                 studente = await _unitOfWork.StudenteRepository.Insert(studente);
-                await _unitOfWork.AulaRepository.Save();
+                await _unitOfWork.StudenteRepository.Save();
                 StudenteDTO studenteDTO = _mapper.Map<StudenteDTO>(studente);
                 return studenteDTO;
             }

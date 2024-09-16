@@ -30,15 +30,16 @@ namespace Corso.Entity.DAL
                 entity.Property(e => e.Idaula);
                 entity.Property(e => e.Descrizione).IsRequired().HasMaxLength(255);
                 entity.Property(e => e.NumeroPosti).IsRequired();
+                //entity.HasMany(e => e.Corso).WithOne(e => e.Aula).
             });
 
             modelBuilder.Entity<Corso>(entity =>
             {
                 entity.HasKey(e => e.Idcorso);
                 entity.Property(e => e.Idcorso);
-                entity.HasOne(a => a.Aula).WithMany(e => e.Corso).HasForeignKey(a => a.Idaula);
+                entity.HasOne(e => e.Aula).WithMany(e => e.Corso).HasForeignKey(e => e.Idaula);
                 entity.Property(e => e.Idaula);
-                entity.HasOne(d => d.Docente).WithMany(c => c.Corso).HasForeignKey(d => d.Iddocente);
+                entity.HasOne(e => e.Docente).WithMany(e => e.Corso).HasForeignKey(e => e.Iddocente);
                 entity.Property(e => e.Iddocente);
                 entity.Property(e => e.NomeCorso).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.Durata).IsRequired().HasMaxLength(50);
@@ -47,12 +48,13 @@ namespace Corso.Entity.DAL
                 
             });
 
-            modelBuilder.Entity<Docente>(entiy =>
+            modelBuilder.Entity<Docente>(entity =>
             {
-                entiy.HasKey(e => e.Iddocente);
-                entiy.Property(e => e.Iddocente);
-                entiy.Property(e => e.Cognome).IsRequired().HasMaxLength(50);
-                entiy.Property(e => e.Nome).IsRequired().HasMaxLength(50);
+                entity.HasKey(e => e.Iddocente);
+                entity.Property(e => e.Iddocente);
+                entity.Property(e => e.Cognome).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Nome).IsRequired().HasMaxLength(50);
+                //entity.HasMany(e => e.Corso).WithOne(e => e.Docente).
             });
 
             modelBuilder.Entity<Studente>(entity =>

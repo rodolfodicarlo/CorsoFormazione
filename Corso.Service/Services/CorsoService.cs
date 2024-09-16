@@ -29,7 +29,7 @@ namespace Corso.Service.Services
         {
             try
             {
-                List<Entity.DAL.Corso> listaCorso = (await _unitOfWork.CorsoRepository.GetAll()).ToList();
+                List<Entity.DAL.Corso> listaCorso = (await _unitOfWork.CorsoRepository.Get(includeProperties: ["Docente", "Aula"])).ToList();
                 List<CorsoDTO> listaCorsoDTO = _mapper.Map<List<CorsoDTO>>(listaCorso);
                 return listaCorsoDTO;
             }
@@ -57,9 +57,11 @@ namespace Corso.Service.Services
         {
             try
             {
+                _ = (await _unitOfWork.AulaRepository.Get(a => a.Idaula == dto.IdAula)).FirstOrDefault() ?? throw new BadRequestException("IdAula errata o inesistente", "Ops, qualcosa è andato storto");
+                _ = (await _unitOfWork.DocenteRepository.Get(d => d.Iddocente == dto.IdDocente)).FirstOrDefault() ?? throw new BadRequestException("IdDocente errato o inesistente", "Ops, qualcosa è andato storto");
                 Entity.DAL.Corso corso = _mapper.Map<Entity.DAL.Corso>(dto);
                 corso = await _unitOfWork.CorsoRepository.Insert(corso);
-                await _unitOfWork.AulaRepository.Save();
+                await _unitOfWork.CorsoRepository.Save();
                 CorsoDTO corsoDTO = _mapper.Map<CorsoDTO>(corso);
                 return corsoDTO;
             }
@@ -73,6 +75,8 @@ namespace Corso.Service.Services
         {
             try
             {
+                _ = (await _unitOfWork.AulaRepository.Get(a => a.Idaula == dto.IdAula)).FirstOrDefault() ?? throw new BadRequestException("IdAula errata o inesistente", "Ops, qualcosa è andato storto");
+                _ = (await _unitOfWork.DocenteRepository.Get(d => d.Iddocente == dto.IdDocente)).FirstOrDefault() ?? throw new BadRequestException("IdDocente errato o inesistente", "Ops, qualcosa è andato storto");
                 Entity.DAL.Corso corso = await _unitOfWork.CorsoRepository.GetByID(dto.IdCorso) ?? throw new BadRequestException("IDCorso errato o inesistente", "Ops... qualcosa è andato storto");
                 _mapper.Map(dto, corso);
                 await _unitOfWork.CorsoRepository.Save();
