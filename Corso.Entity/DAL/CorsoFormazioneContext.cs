@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Corso.Entity.DAL
 {
-    public class CorsoFormazioneContext : DbContext
+    public class CorsoFormazioneContext : IdentityDbContext<IdentityUser>
     {
         public CorsoFormazioneContext() { }
 

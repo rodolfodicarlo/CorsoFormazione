@@ -2,6 +2,7 @@
 using Corso.Service.DTOs.DocenteDTOs;
 using Corso.Service.IServices;
 using Corso.WebApi.Models.DocenteModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiddlewareExceptionHandler.Controllers;
 using MiddlewareExceptionHandler.ResponseModel;
@@ -39,6 +40,7 @@ namespace Corso.WebApi.Controllers
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpGet]
+        [Authorize(Roles = "Docente")]
         [ProducesResponseType(typeof(ApiResponseModel<List<DocenteDTO>>), StatusCodes.Status200OK)]
         public async Task<ActionResult> ElencoDocenti()
         {
@@ -62,6 +64,7 @@ namespace Corso.WebApi.Controllers
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpGet]
+        [Authorize(Roles = "Docente")]
         [ProducesResponseType(typeof(ApiResponseModel<DocenteDTO>), StatusCodes.Status200OK)]
         public async Task<ActionResult> RecuperaDocente(int id)
         {
@@ -85,6 +88,7 @@ namespace Corso.WebApi.Controllers
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpPost]
+        [Authorize(Roles = "Docente")]
         [ProducesResponseType(typeof(ApiResponseModel<DocenteDTO>), StatusCodes.Status200OK)]
         public async Task<ActionResult> CreaDocente([FromBody] CreaDocenteModel model)
         {
@@ -109,6 +113,7 @@ namespace Corso.WebApi.Controllers
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpPut]
+        [Authorize(Roles = "Docente")]
         [ProducesResponseType(typeof(ApiResponseModel<DocenteDTO>), StatusCodes.Status200OK)]
         public async Task<ActionResult> ModificaDocente([FromBody] ModificaDocenteModel model)
         {
@@ -133,6 +138,7 @@ namespace Corso.WebApi.Controllers
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpDelete]
+        [Authorize(Roles = "Docente")]
         [ProducesResponseType(typeof(ApiResponseModel<int>), StatusCodes.Status200OK)]
         public async Task<ActionResult> EliminaDocente(int id)
         {

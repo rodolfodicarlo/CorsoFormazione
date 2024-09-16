@@ -12,6 +12,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperService));
 builder.Services.AddAutoMapper(typeof(AutoMapperWebApi));
 builder.Services.AddApplicationServices(configuration);
 builder.Services.AddCustomService();
+builder.Services.AddIdentityServices(configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -31,8 +32,11 @@ app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers()
+        .RequireAuthorization("TokenRequired");
 
 app.Run();
