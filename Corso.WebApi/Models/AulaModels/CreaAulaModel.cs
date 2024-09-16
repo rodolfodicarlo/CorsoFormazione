@@ -8,7 +8,7 @@ namespace Corso.WebApi.Models.AulaModels
     public class CreaAulaModel
     {
         /// <summary>
-        /// Nome o descrizione dell'aula. Deve essere compresa tra 1 e 100 caratteri.
+        /// Nome o descrizione dell'aula. Deve essere compresa tra 1 e 255 caratteri.
         /// </summary>
         [Required, MinLength(1), MaxLength(255)]
         public string Descrizione { get; set; } = null!;

@@ -1,6 +1,12 @@
 ﻿using AutoMapper;
 using Corso.Service.DTOs.AulaDTOs;
+using Corso.Service.DTOs.CorsoDTOs;
+using Corso.Service.DTOs.DocenteDTOs;
+using Corso.Service.DTOs.StudenteDTOs;
 using Corso.WebApi.Models.AulaModels;
+using Corso.WebApi.Models.CorsoModels;
+using Corso.WebApi.Models.DocenteModels;
+using Corso.WebApi.Models.StudenteModels;
 
 namespace Corso.WebApi.Helpers.InjectableHelpers
 {
@@ -12,7 +18,7 @@ namespace Corso.WebApi.Helpers.InjectableHelpers
     {
         /// <summary>
         /// Costruttore della classe AutoMapperHelper.
-        /// Configura le mappature per l'entità Aula e i relativi DTO.
+        /// Configura le mappature per l'entità e i relativi DTO.
         /// </summary>
         public AutoMapperHelper()
         {
@@ -21,6 +27,23 @@ namespace Corso.WebApi.Helpers.InjectableHelpers
             CreateMap<CreaAulaModel, CreaAulaDTO>();
             CreateMap<ModificaAulaModel, ModificaAulaDTO>();
 
+            #endregion
+
+            #region Docente
+
+            CreateMap<CreaDocenteModel, CreaDocenteDTO>();
+            CreateMap<ModificaDocenteModel, ModificaDocenteDTO>();
+
+            #endregion Studente
+
+            #region
+            CreateMap<CreaStudenteModel, CreaStudenteDTO>();
+            CreateMap<ModificaStudenteDTO, ModificaStudenteDTO>();
+            #endregion
+
+            #region Corso
+            CreateMap<CreaCorsoModel, CreaCorsoDTO>();
+            CreateMap<ModificaCorsoDTO, CreaCorsoDTO>();
             #endregion
         }
     }

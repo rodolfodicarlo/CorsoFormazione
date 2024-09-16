@@ -58,7 +58,7 @@ namespace Corso.WebApi.Controllers
         /// </summary>
         /// <param name="id">L'ID dell'aula da recuperare.</param>
         /// <returns>Un oggetto <see cref="AulaDTO"/>.</returns>
-        /// <response code="200">Un'aula specifica per ID..</response>
+        /// <response code="200">Un'aula specifica per ID.</response>
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpGet]

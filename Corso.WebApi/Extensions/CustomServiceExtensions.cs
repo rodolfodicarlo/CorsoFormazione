@@ -28,6 +28,9 @@ namespace Corso.WebApi.Extensions
                 #region Service
 
                 services.AddScoped<IAulaService, AulaService>();
+                services.AddScoped<ICorsoService, CorsoService>();
+                services.AddScoped<IDocenteService, DocenteService>();
+                services.AddScoped<IStudenteService, StudenteService>();
 
                 #endregion
 
