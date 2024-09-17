@@ -1,6 +1,7 @@
 ﻿using Corso.Entity.IUnitOfWork;
 using Corso.Service.IServices;
 using Corso.Service.Services;
+using Corso.WebApi.Helpers.InjectableHelpers;
 using MiddlewareExceptionHandler.ExceptionHandling;
 
 namespace Corso.WebApi.Extensions
@@ -19,6 +20,12 @@ namespace Corso.WebApi.Extensions
         {
             try
             {
+                #region Helper
+
+                services.AddScoped<TokenHelper>();
+
+                #endregion
+
                 #region Middleware
 
                 services.AddScoped<GlobalExceptionHandlingMiddleware>();

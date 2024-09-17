@@ -24,6 +24,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    await ApplicationServiceExtensions.InitializeDataAsync(app);
     app.UseSwagger();
     app.UseSwaggerUI();
 }

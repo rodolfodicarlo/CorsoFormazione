@@ -24,6 +24,7 @@ namespace Corso.Service.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
         /// <inheritdoc/>
         public async Task<List<CorsoDTO>> GetAll()
         {
@@ -38,6 +39,7 @@ namespace Corso.Service.Services
                 throw;
             }
         }
+
         /// <inheritdoc/>
         public async Task<CorsoDTO> GetById(int id)
         {
@@ -52,6 +54,7 @@ namespace Corso.Service.Services
                 throw;
             }
         }
+
         /// <inheritdocs/>
         public async Task<CorsoDTO> Create(CreaCorsoDTO dto)
         {
@@ -70,6 +73,7 @@ namespace Corso.Service.Services
                 throw;
             }
         }
+
         /// <inheritdoc/>
         public async Task<CorsoDTO> Update(ModificaCorsoDTO dto)
         {
@@ -88,6 +92,7 @@ namespace Corso.Service.Services
                 throw;
             }
         }
+
         /// <inheritdoc/>
         public async Task<int> Delete(int id)
         {

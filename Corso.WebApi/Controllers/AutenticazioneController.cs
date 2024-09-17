@@ -17,14 +17,14 @@ namespace Corso.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class IdentityController : BaseApiController
+    public class AutenticazioneController : BaseApiController
     {
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public IdentityController(IConfiguration configuration, IMapper mapper, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, ILogger<AulaController> logger) : base(logger)
+        public AutenticazioneController(IConfiguration configuration, IMapper mapper, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, ILogger<AulaController> logger) : base(logger)
         {
             _configuration = configuration;
             _roleManager = roleManager;
@@ -86,45 +86,12 @@ namespace Corso.WebApi.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponseModel<bool>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> RegisterDocente([FromBody] RegisterModel model)
+        public async Task<ActionResult> RegistraDocente([FromBody] RegisterModel model)
         {
             try
             {
-                IdentityUser? user = await _userManager.FindByEmailAsync(model.Email);
-                if (user != null)
-                {
-                    throw new BadRequestException("Email already in use.", "Email in uso");
-                }
-                else
-                {
-                    user = new();
-                    user.Email = model.Email;
-                    user.UserName = model.Email;
-                    user.SecurityStamp = Guid.NewGuid().ToString();
-                    IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-                    if (!result.Succeeded)
-                    {
-                        throw new CustomException("The AspNetUser could not be saved, please try again.", HttpStatusCode.InternalServerError, "Server error");
-                    }
-                    else
-                    {
-                        try
-                        {
-                            await CreateRole("Docente");
-                            IdentityResult resultRole = await _userManager.AddToRoleAsync(user, "Docente");
-                            if (!result.Succeeded)
-                            {
-                                throw new CustomException(message: $"The role Docente could not be assigned, please try again.", HttpStatusCode.InternalServerError, "Server error");
-                            }
-                            return StandardMessageResult(HttpStatusCode.OK, result: true);
-                        }
-                        catch
-                        {
-                            await _userManager.DeleteAsync(user);
-                            throw;
-                        }
-                    }
-                }
+                await CreateAspNetUser(model, "Docente");
+                return StandardMessageResult(HttpStatusCode.OK, result: true);
             }
             catch
             {
@@ -134,45 +101,12 @@ namespace Corso.WebApi.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponseModel<bool>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> RegisterStudente([FromBody] RegisterModel model)
+        public async Task<ActionResult> RegistraStudente([FromBody] RegisterModel model)
         {
             try
             {
-                IdentityUser? user = await _userManager.FindByEmailAsync(model.Email);
-                if (user != null)
-                {
-                    throw new BadRequestException("Email already in use.", "Email in uso");
-                }
-                else
-                {
-                    user = new();
-                    user.Email = model.Email;
-                    user.UserName = model.Email;
-                    user.SecurityStamp = Guid.NewGuid().ToString();
-                    IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-                    if (!result.Succeeded)
-                    {
-                        throw new CustomException("The AspNetUser could not be saved, please try again.", HttpStatusCode.InternalServerError, "Server error");
-                    }
-                    else
-                    {
-                        try
-                        {
-                            await CreateRole("Studente");
-                            IdentityResult resultRole = await _userManager.AddToRoleAsync(user, "Studente");
-                            if (!result.Succeeded)
-                            {
-                                throw new CustomException(message: $"The role Docente could not be assigned, please try again.", HttpStatusCode.InternalServerError, "Server error");
-                            }
-                            return StandardMessageResult(HttpStatusCode.OK, result: true);
-                        }
-                        catch
-                        {
-                            await _userManager.DeleteAsync(user);
-                            throw;
-                        }
-                    }
-                }
+                await CreateAspNetUser(model, "Studente");
+                return StandardMessageResult(HttpStatusCode.OK, result: true);
             }
             catch
             {
@@ -196,7 +130,7 @@ namespace Corso.WebApi.Controllers
                     }
 
                     claims.Add(new Claim(ClaimTypes.Email, email));
-                    claims.Add(new Claim("aspNetUserId", aspNetUserId));
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, aspNetUserId));
                 }
 
                 string jwtExpireMinutesString = _configuration["Authentication:JwtExpireMinutes"];
@@ -244,6 +178,51 @@ namespace Corso.WebApi.Controllers
                 );
 
                 return new JwtSecurityTokenHandler().WriteToken(token);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private async Task CreateAspNetUser(RegisterModel model, string role)
+        {
+            try
+            {
+                IdentityUser? user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    throw new BadRequestException("Email already in use.", "Email in uso");
+                }
+                else
+                {
+                    user = new();
+                    user.Email = model.Email;
+                    user.UserName = model.Email;
+                    user.SecurityStamp = Guid.NewGuid().ToString();
+                    IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+                    if (!result.Succeeded)
+                    {
+                        throw new CustomException("The AspNetUser could not be saved, please try again.", HttpStatusCode.InternalServerError, "Server error");
+                    }
+                    else
+                    {
+                        try
+                        {
+                            await CreateRole(role);
+                            IdentityResult resultRole = await _userManager.AddToRoleAsync(user, role);
+                            if (!result.Succeeded)
+                            {
+                                throw new CustomException(message: $"The {role} Docente could not be assigned, please try again.", HttpStatusCode.InternalServerError, "Server error");
+                            }
+                        }
+                        catch
+                        {
+                            await _userManager.DeleteAsync(user);
+                            throw;
+                        }
+                    }
+                }
             }
             catch
             {

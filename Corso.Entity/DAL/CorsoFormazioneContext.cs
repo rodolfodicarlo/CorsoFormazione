@@ -37,15 +37,13 @@ namespace Corso.Entity.DAL
             {
                 entity.HasKey(e => e.Idcorso);
                 entity.Property(e => e.Idcorso);
-                entity.HasOne(e => e.Aula).WithMany(e => e.Corso).HasForeignKey(e => e.Idaula);
                 entity.Property(e => e.Idaula);
-                entity.HasOne(e => e.Docente).WithMany(e => e.Corso).HasForeignKey(e => e.Iddocente);
+                entity.HasOne(e => e.Aula).WithMany(e => e.Corso).HasForeignKey(e => e.Idaula);
                 entity.Property(e => e.Iddocente);
+                entity.HasOne(e => e.Docente).WithMany(e => e.Corso).HasForeignKey(e => e.Iddocente);
                 entity.Property(e => e.NomeCorso).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.Durata).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.DataInizio).IsRequired();
-                
-                
             });
 
             modelBuilder.Entity<Docente>(entity =>
@@ -63,8 +61,8 @@ namespace Corso.Entity.DAL
                 entity.Property(e => e.Idstudente);
                 entity.Property(e => e.Cognome).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.Nome).IsRequired().HasMaxLength(50);
-                entity.HasIndex(e => e.Matricola).IsUnique();
                 entity.Property(e => e.Matricola).IsRequired().HasMaxLength(50);
+                entity.HasIndex(e => e.Matricola).IsUnique();
             });
         }
     }

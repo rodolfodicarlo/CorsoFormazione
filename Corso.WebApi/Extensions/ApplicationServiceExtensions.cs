@@ -1,5 +1,8 @@
 ﻿using Corso.Entity.DAL;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MiddlewareExceptionHandler.ExceptionConfiguration;
+using System.Net;
 
 namespace Corso.WebApi.Extensions
 {
@@ -33,6 +36,68 @@ namespace Corso.WebApi.Extensions
             catch
             {
                 throw;
+            }
+        }
+
+        public static async Task InitializeDataAsync(WebApplication app)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>() ?? throw new CustomException("Unable to resolve RoleManager<IdentityRole> from service provider.", code: HttpStatusCode.InternalServerError);
+                UserManager<IdentityUser> userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>() ?? throw new CustomException("Unable to resolve UserManager<IdentityUser> from service provider.", code: HttpStatusCode.InternalServerError);
+
+                string roleName = "Admin";
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    IdentityResult result = await roleManager.CreateAsync(new IdentityRole(roleName));
+                    if (!result.Succeeded)
+                    {
+                        throw new CustomException(
+                            $"Error creating role Admin: {string.Join(", ", result.Errors.Select(e => e.Description))}",
+                            HttpStatusCode.InternalServerError,
+                           "Server error"
+                        );
+                    }
+                }
+
+                IdentityUser? adminUser = await userManager.FindByNameAsync("admin@example.com");
+                if (adminUser == null)
+                {
+                    adminUser = new IdentityUser
+                    {
+                        UserName = "admin@example.com",
+                        Email = "admin@example.com",
+                        EmailConfirmed = true,
+                        LockoutEnabled = false
+                    };
+                    IdentityResult result = await userManager.CreateAsync(adminUser, "Admin1234?");
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(adminUser, "Admin");
+                    }
+                    else
+                    {
+                        throw new CustomException(
+                            $"Error creating admin user: {string.Join(", ", result.Errors.Select(e => e.Description))}",
+                            HttpStatusCode.InternalServerError,
+                            "Server error"
+                        );
+                    }
+                }
+
+                if (adminUser != null && adminUser.LockoutEnabled != false)
+                {
+                    adminUser.LockoutEnabled = false;
+                    IdentityResult updateResult = await userManager.UpdateAsync(adminUser);
+                    if (!updateResult.Succeeded)
+                    {
+                        throw new CustomException(
+                            $"Error updating admin user: {string.Join(", ", updateResult.Errors.Select(e => e.Description))}",
+                            HttpStatusCode.InternalServerError,
+                            "Server error"
+                        );
+                    }
+                }
             }
         }
     }

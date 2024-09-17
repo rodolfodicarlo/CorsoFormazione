@@ -5,6 +5,6 @@
         public int Iddocente { get; set; }
         public string Cognome { get; set; } = null!;
         public string Nome { get; set; } = null!;
-        public virtual ICollection<Corso> Corso { get; set; } = null!;//virtual
+        public virtual ICollection<Corso> Corso { get; set; } = null!;
     }
 }

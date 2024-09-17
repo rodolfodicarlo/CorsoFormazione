@@ -1,0 +1,764 @@
+{
+	"info": {
+		"_postman_id": "b6b09933-5a8c-4a40-8612-e6e55f58c4e6",
+		"name": "Formazione",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29810002"
+	},
+	"item": [
+		{
+			"name": "AulaController",
+			"item": [
+				{
+					"name": "ElencoAule",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/Aula/ElencoAule",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Aula",
+								"ElencoAule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RecuperoAula",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/Aula/RecuperaAula?id=1",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Aula",
+								"RecuperaAula"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreaAula",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descrizione\" : \"Aula magnaAula magna\",\r\n    \"numeroPosti\" : 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/Aula/CreaAula",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Aula",
+								"CreaAula"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ModificaAula",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idAula\" : 1,\r\n    \"descrizione\" : \"Aula magna modificata\",\r\n    \"numeroPosti\" : 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/Aula/ModificaAula",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Aula",
+								"ModificaAula"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminaAula",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/Aula/EliminaAula?id=2",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Aula",
+								"EliminaAula"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AutenticazioneController",
+			"item": [
+				{
+					"name": "GetToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Analizza la risposta JSON\r",
+									"var responseJson = pm.response.json();\r",
+									"\r",
+									"// Verifica che la risposta contenga l'attributo 'payload'\r",
+									"pm.test(\"Verifico che la risposta contenga il payload\", function () {\r",
+									"    pm.expect(responseJson).to.have.property('payload');\r",
+									"});\r",
+									"\r",
+									"// Estrai il valore di accessToken dal payload e memorizzalo nella variabile di collezione\r",
+									"if (responseJson.payload) {\r",
+									"    var accessTokenValue = responseJson.payload.accessToken;\r",
+									"    var refreshTokenValue = responseJson.payload.refreshToken;\r",
+									"    \r",
+									"    // Verifica che accessToken sia presente nel payload\r",
+									"    pm.test(\"Verifico che il payload contenga accessToken e refreshToken\", function () {\r",
+									"        pm.expect(responseJson.payload).to.have.property('accessToken');\r",
+									"        pm.expect(responseJson.payload).to.have.property('refreshToken');\r",
+									"    });\r",
+									"\r",
+									"    // Memorizza il valore di accessToken nella variabile di collezione chiamata 'accessToken'\r",
+									"    pm.collectionVariables.set('accessTokenClient', accessTokenValue);\r",
+									"    pm.collectionVariables.set('refreshTokenClient', refreshTokenValue);\r",
+									"\r",
+									"    // Log del valore di accessToken\r",
+									"    console.log('accessTokenClient:', accessTokenValue);\r",
+									"    console.log('refreshTokenClient:', refreshTokenValue);\r",
+									"} else {\r",
+									"    console.log('Il payload non è presente nella risposta');\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"username\",\r\n    \"password\" : \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/Autenticazione/GetToken",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Autenticazione",
+								"GetToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Analizza la risposta JSON\r",
+									"var responseJson = pm.response.json();\r",
+									"\r",
+									"// Verifica che la risposta contenga l'attributo 'payload'\r",
+									"pm.test(\"Verifico che la risposta contenga il payload\", function () {\r",
+									"    pm.expect(responseJson).to.have.property('payload');\r",
+									"});\r",
+									"\r",
+									"// Estrai il valore di accessToken dal payload e memorizzalo nella variabile di collezione\r",
+									"if (responseJson.payload) {\r",
+									"    var accessTokenValue = responseJson.payload.accessToken;\r",
+									"    var refreshTokenValue = responseJson.payload.refreshToken;\r",
+									"    \r",
+									"    // Verifica che accessToken sia presente nel payload\r",
+									"    pm.test(\"Verifico che il payload contenga accessToken e refreshToken\", function () {\r",
+									"        pm.expect(responseJson.payload).to.have.property('accessToken');\r",
+									"        pm.expect(responseJson.payload).to.have.property('refreshToken');\r",
+									"    });\r",
+									"\r",
+									"    // Memorizza il valore di accessToken nella variabile di collezione chiamata 'accessToken'\r",
+									"    pm.collectionVariables.set('accessTokenLogin', accessTokenValue);\r",
+									"    pm.collectionVariables.set('refreshTokenLogin', refreshTokenValue);\r",
+									"\r",
+									"    // Log del valore di accessToken\r",
+									"    console.log('accessTokenLogin:', accessTokenValue);\r",
+									"    console.log('accessTokenLogin:', refreshTokenValue);\r",
+									"} else {\r",
+									"    console.log('Il payload non è presente nella risposta');\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenClient}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"admin@example.com\",\r\n    \"password\" : \"Admin1234?\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/Autenticazione/Login",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Autenticazione",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Studente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Analizza la risposta JSON\r",
+									"var responseJson = pm.response.json();\r",
+									"\r",
+									"// Verifica che la risposta contenga l'attributo 'payload'\r",
+									"pm.test(\"Verifico che la risposta contenga il payload\", function () {\r",
+									"    pm.expect(responseJson).to.have.property('payload');\r",
+									"});\r",
+									"\r",
+									"// Estrai il valore di accessToken dal payload e memorizzalo nella variabile di collezione\r",
+									"if (responseJson.payload) {\r",
+									"    var accessTokenValue = responseJson.payload.accessToken;\r",
+									"    var refreshTokenValue = responseJson.payload.refreshToken;\r",
+									"    \r",
+									"    // Verifica che accessToken sia presente nel payload\r",
+									"    pm.test(\"Verifico che il payload contenga accessToken e refreshToken\", function () {\r",
+									"        pm.expect(responseJson.payload).to.have.property('accessToken');\r",
+									"        pm.expect(responseJson.payload).to.have.property('refreshToken');\r",
+									"    });\r",
+									"\r",
+									"    // Memorizza il valore di accessToken nella variabile di collezione chiamata 'accessToken'\r",
+									"    pm.collectionVariables.set('accessTokenLogin', accessTokenValue);\r",
+									"    pm.collectionVariables.set('refreshTokenLogin', refreshTokenValue);\r",
+									"\r",
+									"    // Log del valore di accessToken\r",
+									"    console.log('accessTokenLogin:', accessTokenValue);\r",
+									"    console.log('accessTokenLogin:', refreshTokenValue);\r",
+									"} else {\r",
+									"    console.log('Il payload non è presente nella risposta');\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenClient}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"\",\r\n    \"password\" : \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/Autenticazione/Login",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Autenticazione",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RegistraDocente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenClient}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"\",\r\n    \"password\" : \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/Autenticazione/RegistraDocente",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Autenticazione",
+								"RegistraDocente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RegistraStudente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenClient}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"\",\r\n    \"password\" : \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/Autenticazione/RegisteraStudente",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Autenticazione",
+								"RegisteraStudente"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CorsoController",
+			"item": []
+		},
+		{
+			"name": "DocenteController",
+			"item": [
+				{
+					"name": "ElencoDocenti",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenLogin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/Docente/ElencoDocenti",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Docente",
+								"ElencoDocenti"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RecuperaDocente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenLogin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/Docente/RecuperaDocente?id=1",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Docente",
+								"RecuperaDocente"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ModificaDocente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenLogin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cognome\": \"string\",\r\n  \"nome\": \"string\",\r\n  \"matricola\": \"string\",\r\n  \"idStudente\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/Docente/ModificaDocente",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Docente",
+								"ModificaDocente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminaDocente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenLogin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/Docente/EliminaDocente?id=4",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Docente",
+								"EliminaDocente"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "StudenteController",
+			"item": [
+				{
+					"name": "ElencoStudenti",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenLogin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/Studente/ElencoStudenti",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Studente",
+								"ElencoStudenti"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RecuperaStudente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenLogin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/Studente/RecuperaStudente?id=1",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Studente",
+								"RecuperaStudente"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ModificaStudente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenLogin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cognome\": \"string\",\r\n  \"nome\": \"string\",\r\n  \"matricola\": \"string\",\r\n  \"idStudente\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/Studente/ModificaStudente",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Studente",
+								"ModificaStudente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EliminaStudente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenLogin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/Studente/EliminaStudente?id=4",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"Studente",
+								"EliminaStudente"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "endpoint",
+			"value": "https://localhost:7089",
+			"type": "string"
+		},
+		{
+			"key": "accessTokenClient",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refreshTokenClient",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "accessTokenLogin",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refreshTokenLogin",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
