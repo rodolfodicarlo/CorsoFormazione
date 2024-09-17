@@ -65,6 +65,7 @@ namespace Corso.Service.Services
             try
             {
                 _ = (await _unitOfWork.AulaRepository.Get(e => e.Idaula == dto.IDAula)).FirstOrDefault() ?? throw new BadRequestException("IDAula errato o inesistente", "Ops...qualcosa è andato storto");
+                // oppure si può fare anche Aula aula = (await _unitOfWork.AulaRepository.Get(e => e.Idaula == dto.Aula.IdAula)).FirstOrDefault() ?? throw new BadRequestException("IDAula errato o inesistente", "Ops...qualcosa è andato storto");
                 _ = (await _unitOfWork.DocenteRepository.Get(e => e.IDDocente == dto.IDDocente)).FirstOrDefault() ?? throw new BadRequestException("IDDocente errato o inesistente", "Ops...qualcosa è andato storto");
                 CorsoEntity corso = _mapper.Map<CorsoEntity>(dto);
                 corso = await _unitOfWork.CorsoRepository.Insert(corso);

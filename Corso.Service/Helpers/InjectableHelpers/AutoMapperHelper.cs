@@ -42,6 +42,16 @@ namespace Corso.Service.Helpers.InjectableHelpers
             CreateMap<ModificaCorsoDTO, CorsoEntity>();
             CreateMap<CorsoEntity, CorsoDTO>();
 
+
+            //CreateMap<CreaCorsoDTO, CorsoEntity>()
+            // .ForMember(dest => dest.IDAula, opt => opt.MapFrom(src => src.Aula.IdAula))
+            // .ForMember(dest => dest.IDDocente, opt => opt.MapFrom(src => src.Docente.IDDocente));
+            //CreateMap<ModificaCorsoDTO, CorsoEntity>();
+            // per fare il mapping direttamente dei campi delle tabelle
+            //CreateMap<CorsoEntity, CorsoDTO>()
+            // .ForMember(dest => dest.Aula.IdAula, opt => opt.MapFrom(src => new AulaDTO() { IdAula = src.IDAula }))
+            // .ForMember(dest => dest.Docente.IDDocente, opt => opt.MapFrom(src => new DocenteDTO() { IDDocente = src.IDDocente }));
+
             #endregion
         }
     }
