@@ -4,5 +4,6 @@ namespace Corso.Entity.IRepositories
 {
     public interface IStudenteRepository : IGenericRepository<Studente>
     {
+        //string RecuperaUltimaMatricola();
     }
 }

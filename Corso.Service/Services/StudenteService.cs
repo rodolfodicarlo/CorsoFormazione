@@ -42,7 +42,7 @@ namespace Corso.Service.Services
         }
 
         /// <inheritdoc/>
-        public async Task<StudenteDTO> GetById(int id)
+        public async Task<StudenteDTO> GetById(Guid id)
         {
             try
             {
@@ -57,17 +57,19 @@ namespace Corso.Service.Services
         }
 
         /// <inheritdocs/>
-        public async Task<StudenteDTO> Create(CreaStudenteDTO dto)
+        public async Task<StudenteDTO> Create(StudenteDTO dto)
         {
             try
             {
                 Studente studente = _mapper.Map<Studente>(dto);
+                studente.Matricola = Guid.NewGuid().ToString();
+                //studente.Matricola = GeneraMatricola(); 
                 studente = await _unitOfWork.StudenteRepository.Insert(studente);
                 await _unitOfWork.StudenteRepository.Save();
                 StudenteDTO studenteDTO = _mapper.Map<StudenteDTO>(studente);
                 return studenteDTO;
             }
-            catch (Exception ex)
+            catch /*(Exception ex)*/
             {
                 throw;
             }
@@ -91,7 +93,7 @@ namespace Corso.Service.Services
         }
 
         /// <inheritdoc/>
-        public async Task<int> Delete(int id)
+        public async Task<Guid> Delete(Guid id)
         {
             try
             {
@@ -105,5 +107,20 @@ namespace Corso.Service.Services
                 throw;
             }
         }
+
+        //private string GeneraMatricola()
+        //{
+        //    string nuovaMatricola; 
+        //    string ultimaMatricola = _unitOfWork.StudenteRepository.RecuperaUltimaMatricola();
+        //    if (ultimaMatricola != null)
+        //    {
+        //        nuovaMatricola = (int.Parse(ultimaMatricola) + 1).ToString();
+        //    }
+        //    else
+        //    {
+        //        nuovaMatricola = "1";
+        //    }
+        //    return nuovaMatricola;
+        //}
     }
 }

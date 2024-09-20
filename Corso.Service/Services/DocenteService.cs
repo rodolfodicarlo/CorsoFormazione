@@ -42,7 +42,7 @@ namespace Corso.Service.Services
         }
 
         /// <inheritdoc/>
-        public async Task<DocenteDTO> GetById(int id)
+        public async Task<DocenteDTO> GetById(Guid id)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace Corso.Service.Services
         }
 
         /// <inheritdocs/>
-        public async Task<DocenteDTO> Create(CreaDocenteDTO dto)
+        public async Task<DocenteDTO> Create(DocenteDTO dto)
         {
             try
             {
@@ -78,7 +78,8 @@ namespace Corso.Service.Services
         {
             try
             {
-                Docente docente = await _unitOfWork.DocenteRepository.GetByID(dto.IDDocente) ?? throw new BadRequestException("IDDocente errato o inesistente","Ops... qualcosa è andato storto");
+                //Docente docente = await _unitOfWork.DocenteRepository.GetByID(dto.IDDocente) ?? throw new BadRequestException("IDDocente errato o inesistente","Ops... qualcosa è andato storto");
+                Docente docente = (await _unitOfWork.DocenteRepository.Get(x => x.Iddocente == dto.IDDocente)).FirstOrDefault() ?? throw new BadRequestException("IDDocente errato o inesistente", "Ops... qualcosa è andato storto");
                 _mapper.Map(dto, docente);
                 await _unitOfWork.DocenteRepository.Save();
                 DocenteDTO docenteDTO = _mapper.Map<DocenteDTO>(docente);
@@ -91,7 +92,7 @@ namespace Corso.Service.Services
         }
 
         /// <inheritdoc/>
-        public async Task<int> Delete(int id)
+        public async Task<Guid> Delete(Guid id)
         {
             try
             {

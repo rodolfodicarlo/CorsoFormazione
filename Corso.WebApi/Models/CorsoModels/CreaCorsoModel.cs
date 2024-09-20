@@ -11,7 +11,7 @@ namespace Corso.WebApi.Models.CorsoModels
         /// Identificativo univoco del docente responsabile del corso.
         /// </summary>
         [Required]
-        public int IdDocente { get; set; }
+        public Guid IdDocente { get; set; }
 
         /// <summary>
         /// Identificativo univoco del aula in cui si svolge il corso.

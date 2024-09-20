@@ -8,7 +8,7 @@
         /// <summary>
         /// Identificativo univoco dello studente.
         /// </summary>
-        public int IDStudente { get; set; }
+        public Guid IDStudente { get; set; }
 
         /// <summary>
         /// Cognome dello studente.

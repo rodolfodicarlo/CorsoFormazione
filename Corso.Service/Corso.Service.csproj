@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTOs\DocenteDTOs\CreaDocenteDTO.cs" />
+    <Compile Remove="DTOs\StudenteDTOs\CreaStudenteDTO.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="C:\Users\Rodolfo\.nuget\packages\middlewareexceptionhandler\1.0.8\contentFiles\any\net7.0\appsettings.Development.json" />
     <Content Remove="C:\Users\Rodolfo\.nuget\packages\middlewareexceptionhandler\1.0.8\contentFiles\any\net7.0\appsettings.json" />
   </ItemGroup>

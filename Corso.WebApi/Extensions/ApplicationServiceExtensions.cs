@@ -39,6 +39,12 @@ namespace Corso.WebApi.Extensions
             }
         }
 
+        /// <summary>
+        /// Metodo che crea un admin durante l'avvio dell'applicazione se non è già presente.
+        /// </summary>
+        /// <param name="app">L'istanza di <see cref="WebApplication"/> che rappresenta l'applicazione web.</param>
+        /// <returns></returns>
+        /// <exception cref="CustomException"> Generata se l'inizializzazione fallisce.</exception>
         public static async Task InitializeDataAsync(WebApplication app)
         {
             using (var scope = app.Services.CreateScope())

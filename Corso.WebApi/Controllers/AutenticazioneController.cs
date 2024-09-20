@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using Corso.Service.DTOs.AutenticazioneDTOs;
+using Corso.Service.DTOs.DocenteDTOs;
+using Corso.Service.DTOs.StudenteDTOs;
+using Corso.Service.IServices;
 using Corso.WebApi.Models.AutenticazioneModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using MiddlewareExceptionHandler.Controllers;
 using MiddlewareExceptionHandler.ExceptionConfiguration;
 using MiddlewareExceptionHandler.ResponseModel;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
@@ -15,6 +19,9 @@ using System.Text;
 
 namespace Corso.WebApi.Controllers
 {
+    /// <summary>
+    /// Controller per la gestione dell'autenticazione e della registrazione.
+    /// </summary>
     [ApiController]
     [Route("[controller]/[action]")]
     public class AutenticazioneController : BaseApiController
@@ -23,24 +30,46 @@ namespace Corso.WebApi.Controllers
         private readonly IMapper _mapper;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IDocenteService _docenteService;
+        private readonly IStudenteService _studenteService;
 
-        public AutenticazioneController(IConfiguration configuration, IMapper mapper, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, ILogger<AulaController> logger) : base(logger)
+        /// <summary>
+        /// Costruttore del controller Autenticazione.
+        /// </summary>
+        /// <param name="configuration">Configuration per configurare l'applicazione.</param>
+        /// <param name="mapper">Mapper per la trasformazione dei modelli.</param>
+        /// <param name="roleManager">RoleManger per la gestione dei ruoli all'interno del sistema d'identità.</param>
+        /// <param name="userManager">UserManager per la gestione degli utenti del sitema d'identità.</param>
+        /// <param name="docenteService">Servizio per la gestione dei docenti.</param>
+        /// <param name="studenteService">Servizio per la gestione degli studenti.</param>
+        /// <param name="logger">Logger per la gestione dei log.</param>
+        public AutenticazioneController(IConfiguration configuration, IMapper mapper, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, IDocenteService docenteService, IStudenteService studenteService, ILogger<AulaController> logger) : base(logger)
         {
             _configuration = configuration;
             _roleManager = roleManager;
             _userManager = userManager;
             _mapper = mapper;
+            _docenteService = docenteService;
+            _studenteService = studenteService;
         }
 
+        /// <summary>
+        /// Genera un token di accesso.
+        /// </summary>
+        /// <param name="model">Modello che contiene le credenziali.</param>
+        /// <returns>Un oggetto <see cref="ActionResult"/> che contiene il token di accesso.</returns>
+        /// <response code="200">Il token di accesso.</response>
+        /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
+        /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpPost]
         [AllowAnonymous]
         [ProducesResponseType(typeof(ApiResponseModel<TokenDTO>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetToken(TokenRequestModel model)
+        public ActionResult GetToken(TokenRequestModel model)
         {
             try
             {
-                string username = _configuration["ServerCredential:Username"];
-                string password = _configuration["ServerCredential:Password"];
+                string username = _configuration["ServerCredential:username"] ?? throw new CustomException("Non trovata 'ServerCredential:username' nell'appsetting", HttpStatusCode.InternalServerError, "Server error");
+                string password = _configuration["ServerCredential:password"] ?? throw new CustomException("Non trovata 'ServerCredential:password' nell'appsetting", HttpStatusCode.InternalServerError, "Server error");
 
                 if (model.Username == username && model.Password == password)
                 {
@@ -58,6 +87,84 @@ namespace Corso.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Genera un nuovo token di accesso.
+        /// </summary>
+        /// <returns>Un oggetto <see cref="ActionResult"/> che contiene il token di accesso.</returns>
+        /// <response code="200">Il token di accesso.</response>
+        /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
+        /// <response code="500">Server error. L'attributo payload sarà null.</response>
+        [HttpPost]
+        [ProducesResponseType(typeof(ApiResponseModel<TokenDTO>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> RefreshToken()
+        {
+            try
+            {
+                string header = HttpContext.Request.Headers["Authorization"].ToString();
+               
+                if (header == "" || header == null)
+                {
+                    throw new BadRequestException("Token assente nell'header.", "Ops... Qualcosa è andato storto.");
+                }
+
+                string tokenRecuperato = header.Split(" ")[1];
+                string jwtKey = _configuration["Authentication:JwtKey"] ?? throw new CustomException("Non trovata 'Authentication:JwtKey' nell'appsetting", HttpStatusCode.InternalServerError, "Server error");
+                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+                TokenValidationParameters validationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = _configuration["Authentication:JwtAudience"],
+                    ValidAudience = _configuration["Authentication:JwtIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+                    RequireSignedTokens = true
+                };
+
+                try
+                {
+                    ClaimsPrincipal claimsPrincipal = tokenHandler.ValidateToken(tokenRecuperato, validationParameters, out SecurityToken validatedToken);
+                    List<Claim> ruoli = claimsPrincipal.Claims.Where(c => c.Type == ClaimTypes.Role).ToList();
+                    string? email = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                    string? id = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                    bool ruoloEsiste = true;
+                    
+                    for (int i = 0; i < ruoli.Count && ruoloEsiste == true; i++)
+                    {
+                        ruoloEsiste = await _roleManager.RoleExistsAsync(ruoli.ElementAt(i).Value);
+                    }
+                    
+                    if (ruoloEsiste && ruoli != null && ruoli.Count > 0)
+                    {
+                        TokenDTO tokenDTO = CreateToken(ruoli, id, email);
+                        return StandardMessageResult(HttpStatusCode.OK, result: tokenDTO);
+                    }
+                    else
+                    {
+                        TokenDTO tokenDTO = CreateToken([], null, null);
+                        return StandardMessageResult(HttpStatusCode.OK, result: tokenDTO);
+                    }
+                }
+                catch
+                {
+                    throw new BadRequestException("Token non valido.", "Ops... Qualcosa è andato storto.");
+                }
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Genera il token di login.
+        /// </summary>
+        /// <param name="model">Modello che contiene le credenziali dell'utente.</param>
+        /// <returns>Un oggetto <see cref="ActionResult"/> che contine il token di login.</returns>
+        /// <response code="200">Il token di login.</response>
+        /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
+        /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponseModel<TokenDTO>), StatusCodes.Status200OK)]
         public async Task<ActionResult> Login([FromBody] LoginModel model)
@@ -84,14 +191,25 @@ namespace Corso.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Registra un nuovo docente.
+        /// </summary>
+        /// <param name="model">Contiene i dati per la registrazione di un nuovo docente.</param>
+        /// <returns>Un oggetto <see cref="ActionResult"/> che contiene il docente creato.</returns>
+        /// <response code="200">Il docente creato.</response>
+        /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
+        /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpPost]
-        [ProducesResponseType(typeof(ApiResponseModel<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponseModel<DocenteDTO>), StatusCodes.Status200OK)]
         public async Task<ActionResult> RegistraDocente([FromBody] RegisterModel model)
         {
             try
             {
-                await CreateAspNetUser(model, "Docente");
-                return StandardMessageResult(HttpStatusCode.OK, result: true);
+                Guid id = await CreateAspNetUser(model, "Docente");
+                DocenteDTO docenteDTO = _mapper.Map<DocenteDTO>(model);
+                docenteDTO.IDDocente = id;
+                DocenteDTO docenteCreatoDTO = await _docenteService.Create(docenteDTO);
+                return StandardMessageResult(HttpStatusCode.OK, result: docenteCreatoDTO);
             }
             catch
             {
@@ -99,13 +217,24 @@ namespace Corso.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Registra un nuovo studente.
+        /// </summary>
+        /// <param name="model">Contiene i dati per la registrazione di un nuovo studente.</param>
+        /// <returns>Un oggetto <see cref="ActionResult"/> che contiene una booleana che indica se la registrazione è riuscita.</returns>
+        /// <response code="200">Una booleana di valore true.</response>
+        /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
+        /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponseModel<bool>), StatusCodes.Status200OK)]
         public async Task<ActionResult> RegistraStudente([FromBody] RegisterModel model)
         {
             try
             {
-                await CreateAspNetUser(model, "Studente");
+                Guid id = await CreateAspNetUser(model, "Studente");
+                StudenteDTO studenteDTO = _mapper.Map<StudenteDTO>(model);
+                studenteDTO.IDStudente = id;
+                await _studenteService.Create(studenteDTO);
                 return StandardMessageResult(HttpStatusCode.OK, result: true);
             }
             catch
@@ -133,13 +262,13 @@ namespace Corso.WebApi.Controllers
                     claims.Add(new Claim(ClaimTypes.NameIdentifier, aspNetUserId));
                 }
 
-                string jwtExpireMinutesString = _configuration["Authentication:JwtExpireMinutes"];
+                string jwtExpireMinutesString = _configuration["Authentication:JwtExpireMinutes"] ?? throw new CustomException("Non trovata 'Authentication:JwtExpireMinutes' nell'appsetting", HttpStatusCode.InternalServerError, "Server error");
                 double jwtExpireMinutes = double.Parse(jwtExpireMinutesString);
 
                 DateTime accessTkExpires = DateTime.Now.AddMinutes(jwtExpireMinutes);
                 string accessTokenString = GenerateJWT(accessTkExpires, claims);
 
-                string JwtRefreshExpireMinutesString = _configuration["Authentication:JwtRefreshExpireMinutes"];
+                string JwtRefreshExpireMinutesString = _configuration["Authentication:JwtRefreshExpireMinutes"] ?? throw new CustomException("Non trovata 'Authentication:JwtRefreshExpireMinutes' nell'appsetting", HttpStatusCode.InternalServerError, "Server error");
                 double JwtRefreshExpireMinutes = double.Parse(JwtRefreshExpireMinutesString);
 
                 DateTime refreshTkExpires = DateTime.Now.AddMinutes(JwtRefreshExpireMinutes);
@@ -165,7 +294,7 @@ namespace Corso.WebApi.Controllers
         {
             try
             {
-                string jwtKey = _configuration["Authentication:JwtKey"];
+                string jwtKey = _configuration["Authentication:JwtKey"] ?? throw new CustomException("Non trovata 'Authentication:JwtKey' nell'appsetting", HttpStatusCode.InternalServerError, "Server error");
                 SymmetricSecurityKey secretKey = new(Encoding.UTF8.GetBytes(jwtKey));
 
                 var token = new JwtSecurityToken
@@ -185,7 +314,7 @@ namespace Corso.WebApi.Controllers
             }
         }
 
-        private async Task CreateAspNetUser(RegisterModel model, string role)
+        private async Task<Guid> CreateAspNetUser(RegisterModel model, string role)
         {
             try
             {
@@ -213,7 +342,7 @@ namespace Corso.WebApi.Controllers
                             IdentityResult resultRole = await _userManager.AddToRoleAsync(user, role);
                             if (!result.Succeeded)
                             {
-                                throw new CustomException(message: $"The {role} Docente could not be assigned, please try again.", HttpStatusCode.InternalServerError, "Server error");
+                                throw new CustomException(message: $"The role: {role} could not be assigned, please try again.", HttpStatusCode.InternalServerError, "Server error");
                             }
                         }
                         catch
@@ -221,6 +350,7 @@ namespace Corso.WebApi.Controllers
                             await _userManager.DeleteAsync(user);
                             throw;
                         }
+                        return Guid.Parse(user.Id);
                     }
                 }
             }

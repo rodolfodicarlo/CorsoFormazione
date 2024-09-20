@@ -1,16 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Corso.Service.DTOs.AutenticazioneDTOs
+﻿namespace Corso.Service.DTOs.AutenticazioneDTOs
 {
+    /// <summary>
+    /// Classe in cui vengono dichiarati i token di accesso e aggiornamento e la loro scadenza.
+    /// </summary>
     public class TokenDTO
     {
-        public string accessToken { get; set; }
+        /// <summary>
+        /// Token di acesso.
+        /// </summary>
+        public string accessToken { get; set; } = null!;
+        
+        /// <summary>
+        /// Durata in millisecondi dell'accessToken.
+        /// </summary>
         public double accessTokenExpire { get; set; }
-        public string refreshToken { get; set; }
+
+        /// <summary>
+        /// Token di aggiornamento.
+        /// </summary>
+        public string refreshToken { get; set; } = null!;
+
+        /// <summary>
+        /// Durata in millisecondi del refreshToken.
+        /// </summary>
         public double refreshTokenExpire { get; set; }
     }
 }

@@ -1,9 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using MiddlewareExceptionHandler.ExceptionConfiguration;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using System.Security.Claims;
-using System.Text;
+﻿using System.Security.Claims;
 
 namespace Corso.WebApi.Helpers.InjectableHelpers
 {
@@ -32,7 +27,7 @@ namespace Corso.WebApi.Helpers.InjectableHelpers
         /// <param name="roles">An array of role names to check for authorization.</param>
         /// <param name="id">The ID of the Operator/User to check for authorization.</param>
         /// <returns>True if authorized; otherwise, false.</returns>
-        public bool IsAuthorized(string[]? roles = null, int? id = null)
+        public bool IsAuthorized(string[]? roles = null, Guid? id = null)
         {
             var httpContext = _httpContextAccessor.HttpContext;
 

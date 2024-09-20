@@ -53,7 +53,10 @@ namespace Corso.Entity.Repositories
         {
             return await _dbSet.FindAsync(id);
         }
-
+        public virtual async Task<TEntity?> GetByID(Guid id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
         public virtual async Task<TEntity> Insert(TEntity entity)
         {
             return (await _dbSet.AddAsync(entity)).Entity;

@@ -16,9 +16,9 @@
         /// </summary>
         public string Nome { get; set; } = null!;
 
-        /// <summary>
-        /// Matricola univoca dello studente.
-        /// </summary>
-        public string Matricola { get; set; } = null!;
+        ///// <summary>
+        ///// Matricola univoca dello studente.
+        ///// </summary>
+        //public string Matricola { get; set; } = null!;
     }
 }

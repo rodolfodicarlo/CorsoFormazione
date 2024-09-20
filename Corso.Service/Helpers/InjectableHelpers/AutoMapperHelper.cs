@@ -28,13 +28,13 @@ namespace Corso.Service.Helpers.InjectableHelpers
             #endregion
 
             #region Docente
-            CreateMap<CreaDocenteDTO, Docente>();
+            CreateMap<DocenteDTO, Docente>();
             CreateMap<ModificaDocenteDTO, Docente>();
             CreateMap<Docente, DocenteDTO>();
             #endregion
 
             #region Studente
-            CreateMap<CreaStudenteDTO, Studente>();
+            CreateMap<StudenteDTO, Studente>();
             CreateMap<ModificaStudenteDTO, Studente>();
             CreateMap<Studente, StudenteDTO>();
             #endregion

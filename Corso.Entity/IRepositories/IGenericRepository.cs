@@ -9,6 +9,7 @@ namespace Corso.Entity.IRepositories
                                Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
                                params string[] includeProperties);
         Task<TEntity?> GetByID(int id);
+        Task<TEntity?> GetByID(Guid id);
         Task<TEntity> Insert(TEntity entity);
         TEntity Update(TEntity entity);
         void Delete(TEntity entity);

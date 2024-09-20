@@ -8,7 +8,7 @@
         /// <summary>
         /// Identificativo univoco del docente.
         /// </summary>
-        public int IDDocente { get; set; }
+        public Guid IDDocente { get; set; }
 
         /// <summary>
         /// Cognome del docente.
@@ -16,7 +16,7 @@
         public string Cognome { get; set; } = null!;
         
         /// <summary>
-        /// Nome dello studente.
+        /// Nome del docente.
         /// </summary>
         public string Nome { get; set; } = null!;
     }

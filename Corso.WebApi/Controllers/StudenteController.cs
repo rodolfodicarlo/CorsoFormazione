@@ -28,6 +28,7 @@ namespace Corso.WebApi.Controllers
         /// </summary>
         /// <param name="studenteService">Servizio per la gestione degli studenti.</param>
         /// <param name="mapper">Mapper per la trasformazione dei modelli.</param>
+        /// <param name="tokenHelper">TokenHelper per la gestione dei token di autenticazione e autorizzazione.</param>
         /// <param name="logger">Logger per la gestione dei log.</param>
         public StudenteController(IStudenteService studenteService, IMapper mapper, TokenHelper tokenHelper, ILogger<StudenteController> logger) : base(logger)
         {
@@ -37,10 +38,10 @@ namespace Corso.WebApi.Controllers
         }
 
         /// <summary>
-        /// Recupera l'elenco di tutte le studente.
+        /// Recupera l'elenco di tutti gli studenti.
         /// </summary>
         /// <returns>Una lista di oggetti <see cref="StudenteDTO"/>.</returns>
-        /// <response code="200">L'elenco di tutte le aule.</response>
+        /// <response code="200">L'elenco di tutti gli studenti.</response>
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpGet]
@@ -62,7 +63,7 @@ namespace Corso.WebApi.Controllers
         /// <summary>
         /// Recupera i dettagli di uno studente specifico per ID.
         /// </summary>
-        /// <param name="id">L'ID del studente da recuperare.</param>
+        /// <param name="id">L'ID dello studente da recuperare.</param>
         /// <returns>Un oggetto <see cref="StudenteDTO"/>.</returns>
         /// <response code="200">Uno studente specifico per ID.</response>
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
@@ -70,7 +71,7 @@ namespace Corso.WebApi.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin, Studente")]
         [ProducesResponseType(typeof(ApiResponseModel<StudenteDTO>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> RecuperaStudente(int id)
+        public async Task<ActionResult> RecuperaStudente(Guid id)
         {
             try
             {
@@ -125,21 +126,21 @@ namespace Corso.WebApi.Controllers
         /// <summary>
         /// Elimina uno studente.
         /// </summary>
-        /// <param name="id">L'identificativo univoco del studente da eliminare.</param>
-        /// <returns>L'ID del studente eliminato.</returns>
+        /// <param name="id">L'identificativo univoco dello studente da eliminare.</param>
+        /// <returns>L'ID dello studente eliminato.</returns>
         /// <response code="200">L'ID dello studente eliminato.</response>
         /// <response code="400">BadRequest. L'attributo payload sarà null.</response>
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpDelete]
         [Authorize(Roles = "Admin, Studente")]
-        [ProducesResponseType(typeof(ApiResponseModel<int>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> EliminaStudente(int id)
+        [ProducesResponseType(typeof(ApiResponseModel<Guid>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> EliminaStudente(Guid id)
         {
             try
             {
                 if (_tokenHelper.IsAuthorized(["Admin"], id))
                 {
-                    int idDeleted = await _studenteService.Delete(id);
+                    Guid idDeleted = await _studenteService.Delete(id);
                     return StandardMessageResult(HttpStatusCode.OK, result: idDeleted);
                 }
                 else

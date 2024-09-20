@@ -3,7 +3,7 @@
     public class Corso
     {
         public int Idcorso { get; set; }
-        public int Iddocente { get; set; }
+        public Guid Iddocente { get; set; }
         public int Idaula{ get; set; }
         public string NomeCorso { get; set; } = null!;
         public string Durata { get; set; } = null!;

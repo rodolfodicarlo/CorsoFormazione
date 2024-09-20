@@ -2,12 +2,23 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using MiddlewareExceptionHandler.ExceptionConfiguration;
+using System.Net;
 using System.Text;
 
 namespace Corso.WebApi.Extensions
 {
+    /// <summary>
+    /// Classe per configurare i servizi di identità dell'applicazione.
+    /// </summary>
     public static class IdentityServiceExtensions
     {
+        /// <summary>
+        /// Metodo per configurare i servizi d'identità.
+        /// </summary>
+        /// <param name="services">Service in cui vengono registrati i servizi.</param>
+        /// <param name="configuration">Configuration per accedere alle impostazioni di configurazione.</param>
+        /// <returns>Il Service configurato.</returns>
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
             try
@@ -43,7 +54,7 @@ namespace Corso.WebApi.Extensions
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Authentication:JwtKey"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Authentication:JwtKey"] ?? throw new CustomException("Non trovata 'Authentication:JwtKey' nell'appsetting", HttpStatusCode.InternalServerError, "Server error")))
                     };
                 });
 

@@ -5,13 +5,14 @@
     /// </summary>
     public class CreaDocenteDTO
     {
+
         /// <summary>
         /// Cognome del docente.
         /// </summary>
         public string Cognome { get; set; } = null!;
        
         /// <summary>
-        /// Nome dello studente.
+        /// Nome del docente.
         /// </summary>
         public string Nome { get; set; } = null!;
     }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Corso.Entity.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -68,8 +68,7 @@ namespace Corso.Entity.Migrations
                 name: "Docente",
                 columns: table => new
                 {
-                    Iddocente = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Iddocente = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Cognome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
@@ -82,8 +81,7 @@ namespace Corso.Entity.Migrations
                 name: "Studente",
                 columns: table => new
                 {
-                    Idstudente = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Idstudente = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Cognome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Matricola = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
@@ -205,7 +203,7 @@ namespace Corso.Entity.Migrations
                 {
                     Idcorso = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Iddocente = table.Column<int>(type: "int", nullable: false),
+                    Iddocente = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Idaula = table.Column<int>(type: "int", nullable: false),
                     NomeCorso = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Durata = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),

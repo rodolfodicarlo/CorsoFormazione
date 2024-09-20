@@ -18,14 +18,14 @@ namespace Corso.Service.IServices
         /// </summary>
         /// <param name="id">L'identificatore dello StudenteDTO da recuperare.</param>
         /// <returns>L'oggetto StudenteDto con l'identificatore specificato.</returns>
-        Task<StudenteDTO> GetById(int id);
+        Task<StudenteDTO> GetById(Guid id);
 
         /// <summary>
         /// Crea un nuovo record di StudenteDto.
         /// </summary>
         /// <param name="dto">L'oggetto CreaStudenteDTO per creare un nuovo StudenteDTO.</param>
         /// <returns>Il nuovo oggetto StudenteDTO creato.</returns>
-        Task<StudenteDTO> Create(CreaStudenteDTO dto);
+        Task<StudenteDTO> Create(StudenteDTO dto);
 
         /// <summary>
         /// Aggiorna un record esistente di StudenteDTO.
@@ -39,6 +39,6 @@ namespace Corso.Service.IServices
         /// </summary>
         /// <param name="id">L'identificatore univoco dello StudenteDTO eliminato.</param>
         /// <returns></returns>
-        Task<int> Delete(int id);
+        Task<Guid> Delete(Guid id);
     }
 }

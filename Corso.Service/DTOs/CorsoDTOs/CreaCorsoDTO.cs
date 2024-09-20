@@ -8,7 +8,7 @@
         /// <summary>
         /// Identificativo univoco del docente responsabile del corso. 
         /// </summary>
-        public int IdDocente { get; set; }
+        public Guid IdDocente { get; set; }
 
         /// <summary>
         /// Identificativo univoco dell'aula in cui si svolge il corso.

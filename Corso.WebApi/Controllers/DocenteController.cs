@@ -66,7 +66,7 @@ namespace Corso.WebApi.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin, Docente")]
         [ProducesResponseType(typeof(ApiResponseModel<DocenteDTO>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> RecuperaDocente(int id)
+        public async Task<ActionResult> RecuperaDocente(Guid id)
         {
             try
             {
@@ -114,12 +114,12 @@ namespace Corso.WebApi.Controllers
         /// <response code="500">Server error. L'attributo payload sarà null.</response>
         [HttpDelete]
         [Authorize(Roles = "Admin, Docente")]
-        [ProducesResponseType(typeof(ApiResponseModel<int>), StatusCodes.Status200OK)]
-        public async Task<ActionResult> EliminaDocente(int id)
+        [ProducesResponseType(typeof(ApiResponseModel<Guid>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> EliminaDocente(Guid id)
         {
             try
             {
-                int idDeleted = await _docenteService.Delete(id);
+                Guid idDeleted = await _docenteService.Delete(id);
                 return StandardMessageResult(HttpStatusCode.OK, result: idDeleted);
             }
             catch

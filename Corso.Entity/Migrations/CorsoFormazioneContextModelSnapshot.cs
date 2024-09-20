@@ -62,8 +62,8 @@ namespace Corso.Entity.Migrations
                     b.Property<int>("Idaula")
                         .HasColumnType("int");
 
-                    b.Property<int>("Iddocente")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Iddocente")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NomeCorso")
                         .IsRequired()
@@ -81,11 +81,9 @@ namespace Corso.Entity.Migrations
 
             modelBuilder.Entity("Corso.Entity.DAL.Docente", b =>
                 {
-                    b.Property<int>("Iddocente")
+                    b.Property<Guid>("Iddocente")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Iddocente"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Cognome")
                         .IsRequired()
@@ -104,11 +102,9 @@ namespace Corso.Entity.Migrations
 
             modelBuilder.Entity("Corso.Entity.DAL.Studente", b =>
                 {
-                    b.Property<int>("Idstudente")
+                    b.Property<Guid>("Idstudente")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Idstudente"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Cognome")
                         .IsRequired()

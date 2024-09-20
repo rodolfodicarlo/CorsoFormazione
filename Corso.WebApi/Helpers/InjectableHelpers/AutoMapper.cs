@@ -4,6 +4,7 @@ using Corso.Service.DTOs.CorsoDTOs;
 using Corso.Service.DTOs.DocenteDTOs;
 using Corso.Service.DTOs.StudenteDTOs;
 using Corso.WebApi.Models.AulaModels;
+using Corso.WebApi.Models.AutenticazioneModels;
 using Corso.WebApi.Models.CorsoModels;
 using Corso.WebApi.Models.DocenteModels;
 using Corso.WebApi.Models.StudenteModels;
@@ -31,19 +32,24 @@ namespace Corso.WebApi.Helpers.InjectableHelpers
 
             #region Docente
 
-            CreateMap<CreaDocenteModel, CreaDocenteDTO>();
             CreateMap<ModificaDocenteModel, ModificaDocenteDTO>();
 
             #endregion 
 
             #region Studente
-            CreateMap<CreaStudenteModel, CreaStudenteDTO>();
             CreateMap<ModificaStudenteModel, ModificaStudenteDTO>();
             #endregion
 
             #region Corso
             CreateMap<CreaCorsoModel, CreaCorsoDTO>();
             CreateMap<ModificaCorsoModel, ModificaCorsoDTO>();
+            #endregion
+
+            #region Autenticazione
+
+            CreateMap<RegisterModel, DocenteDTO>();
+            CreateMap<RegisterModel, StudenteDTO>();
+
             #endregion
         }
     }

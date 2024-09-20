@@ -18,11 +18,5 @@ namespace Corso.WebApi.Models.StudenteModels
         /// </summary>
         [Required, MinLength(1), MaxLength(50)]
         public string Nome { get; set; } = null!;
-        
-        /// <summary>
-        /// Matricola del studente. Deve essere univoca e compresa tra 1 e 50 caratteri.
-        /// </summary>
-        [Required, MinLength(1), MaxLength(50)]
-        public string Matricola { get; set; } = null!;
     }
 }
